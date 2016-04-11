@@ -15,11 +15,16 @@ Ex:
 ```js
 {
     "database": {
+    	"active": true					// Determine if related methods are active after initialization
         "host": "hostOfYourDB",
         "port": "portOfYourSQLDb", 
         "name": "DBname",
         "username": "DBusername",
         "password": "userPasswordForDB"
+    },
+
+    "rssParser": {
+    	"active": true
     }
 }
 ```
@@ -66,5 +71,36 @@ SELECT query:
 
 DELETE, INSERT, or UPDATE query:  
 `int` -->  Number of rows affected
+
+### `parseRss` 
+Parse any Atom/RSS using this method. It loads an helpful library written by Arian Stolwijk (https://github.com/arian/Rss-Parser) with a little fork by me.
+Ex:
+```php
+<?php
+
+$rss = LaSale::parseRss('http://exampleurl.com/feed');
+
+?>
+```
+##### Returns  
+`obj` --> RSS object
+
+#### Helper Submethods
+##### - `getItems` --> Get every items
+##### - `getLink` --> Get link from an item
+##### - `getTitle` --> Get tile from
+##### - `getPubDate` --> Get publish date
+Ex:
+```php
+<?php
+
+$rss = LaSale::parseRss('http://exampleurl.com/feed');
+
+foreach($rss->getItems() as $item){
+	echo '<a href="'.$item->getLink().'">'.$item->getTitle().'</a><br /> <span>'.$item->getPubDate().'</span>';
+}
+
+?>
+```
 
 
