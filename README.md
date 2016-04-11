@@ -78,7 +78,9 @@ Ex:
 ```php
 <?php
 
-$rss = LaSale::parseRss('http://exampleurl.com/feed');
+$LaSale = new LaSale();
+$rss = $LaSale->parseRss("http://www.linktorss.com/feed/");
+$rss2 = $LaSale->parseRss("http://www.linktoanotherrss.com/feed/");
 
 ?>
 ```
@@ -93,8 +95,8 @@ $rss = LaSale::parseRss('http://exampleurl.com/feed');
 Ex:
 ```php
 <?php
-
-$rss = LaSale::parseRss('http://exampleurl.com/feed');
+$LaSale = new LaSale();
+$rss = $LaSale->parseRss('http://www.linktorss.com/feed/');
 
 foreach($rss->getItems() as $item){
 	echo '<a href="'.$item->getLink().'">'.$item->getTitle().'</a><br /> <span>'.$item->getPubDate().'</span>';
