@@ -47,6 +47,33 @@
             // store configuration
             self::$config = $config;
 
+            self::initRssParser();
+
+
+        }
+
+        private static function initRssParser() 
+        {
+            // ensure library is initialized
+            if (!isset(self::$config))
+            {
+                trigger_error("LaSale Library is not initialized", E_USER_ERROR);
+            }
+
+            // ensure database is configured
+            if (!isset(self::$config["rssParser"]))
+            {
+                trigger_error("Missing value for rssParser", E_USER_ERROR);
+            }
+
+            if (!isset(self::$config["rssParser"]["active"])) {
+                trigger_error("Missing value for rssParser", E_USER_ERROR);   
+            }
+
+            if (self::$config["rssParser"]["active"] == true) {
+                require(__DIR__ . "/deps/rss-parser/Rss_Item.php");
+                require(__DIR__ . "/deps/rss-parser/Rss_Parser.php"); 
+            }
 
         }
 
@@ -173,36 +200,18 @@ SQL;
          * Load RssParser classes and parse the url provided.
          * Return the RSS obj
          */
-        public static function parseRss($url)
+        public function parseRss($url)
         {
-                        // ensure library is initialized
-            if (!isset(self::$config))
-            {
-                trigger_error("LaSale Library is not initialized", E_USER_ERROR);
-            }
-
-            // ensure database is configured
-            if (!isset(self::$config["rssParser"]))
-            {
-                trigger_error("Missing value for rssParser", E_USER_ERROR);
-            }
-
-            if (!isset(self::$config["rssParser"]["active"])) {
-                trigger_error("Missing value for rssParser", E_USER_ERROR);   
-            }
-
+            
             if (self::$config["rssParser"]["active"] == false) {
                 trigger_error("rssParser module activation is setted on FALSE", E_USER_ERROR); 
             }
 
             if (!isset($url)) {
                 trigger_error("Url to parse not provided", E_USER_ERROR); 
-            }
+            }            
 
-            require(__DIR__ . "/deps/rss-parser/RssItem.php");
-            require(__DIR__ . "/deps/rss-parser/RssParser.php");
-
-            $rssParser = new RssParser();
+            $rssParser = new Rss_Parser();
             return $rssParser->load($url);
         }
 
